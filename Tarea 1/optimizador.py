@@ -10,8 +10,7 @@ def modelo(x, parametros):
     """
     a, b, c = parametros
     # Se usa np.abs(x) o se asegura x > 0 para evitar errores con x^c si x < 0 y c es fraccionario
-    # En este contexto, asumiremos que x > 0 o que los datos lo permiten.
-    # Para ser robustos usando base np.clip para que no sea exactamente 0 al elevar a potencia <=0
+  
     x_seguro = np.maximum(x, 1e-8) 
     return a + np.sin(2 * np.pi * b * x) + np.power(x_seguro, c)
 

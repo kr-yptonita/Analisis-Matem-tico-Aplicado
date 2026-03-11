@@ -17,7 +17,7 @@ from optimizador import (
 )
 
 # Parámetros reals para la generación de datos sintéticos
-P_VERDADERO = [2.0, 0.5, 1.5] # a, b, c
+P_VERDADERO = [2.3, 0.6, 1.9]
 
 class AplicacionAjusteCurvas:
     def __init__(self, root):
@@ -29,10 +29,9 @@ class AplicacionAjusteCurvas:
         self.generar_datos()
         self.p_inicial = [1.0, 0.1, 1.0] # Suposición inicial
         
-        # Cargar imágenes
+        # Carga imágenes
         self.cargar_imagenes()
         
-        # Configurar UI
         self.configurar_ui()
         
     def generar_datos(self):
@@ -113,8 +112,7 @@ class AplicacionAjusteCurvas:
         self.lbl_resultados = tk.Label(marco_controles, text="", bg="lightgray", justify="left")
         self.lbl_resultados.pack(pady=10, padx=10)
         
-        # 3. Panel de Gráficas (Matplotlib) incorporado en la ventana
-        # Colocamos un frame derecho para las dos gráficas
+        # 3. Panel de Gráficas
         marco_graficas = tk.Frame(self.fondo_canvas, bg="white", bd=2, relief="sunken")
         self.fondo_canvas.create_window(300, 50, window=marco_graficas, anchor="nw", width=850, height=700)
         

@@ -1,0 +1,42 @@
+\documentclass[12pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{titlesec}
+
+\geometry{a4paper, margin=2.5cm}
+
+% Configuración de títulos para que parezcan secciones de un reporte
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries}{}{0pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-20pt}{20pt}
+
+\title{
+    \textbf{Universidad Nacional Autónoma de México} \\
+    \Large Facultad de Ciencias \\
+    \vspace{1cm}
+    \large Análisis Matemático Aplicado (Clave: 0919) \\
+    \vspace{0.5cm}
+    \textbf{Tarea 2: Optimización No Lineal y Estimación de Parámetros usando el Algoritmo Adam}
+}
+\author{Semestre 2026}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\chapter{Introducción}
+El objetivo de esta práctica es implementar el algoritmo Adam para resolver un problema de regresión no lineal basado en el modelo:
+\begin{equation}
+    f(x;m)=a+\frac{\sin(2\pi bx)}{x^{c}}
+\end{equation}
+
+
+
+\end{document}

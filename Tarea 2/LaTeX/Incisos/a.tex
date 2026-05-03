@@ -1,0 +1,47 @@
+\section{Inciso A: Derivación Analítica del Gradiente (Regla de la Cadena)}
+
+Para optimizar los parámetros $m=[a,b,c]^{T}$ mediante el algoritmo Adam, es fundamental calcular el gradiente de la función de pérdida $L(m)$ definida como el Error Cuadrático Medio (MSE):
+\begin{equation}
+    L(m)=\frac{1}{2N}\sum_{i=1}^{N}(f(x_{i};m)-y_{i})^{2}
+\end{equation}
+
+\subsection{Derivadas Parciales del Modelo $f(x;m)$}
+
+A continuación se presentan las derivadas parciales de la función de hipótesis respecto a cada parámetro:
+
+\begin{enumerate}
+    \item \textbf{Derivada respecto a $a$}:
+    Como el parámetro $a$ es un término aditivo lineal:
+    \begin{equation}
+        \frac{\partial f}{\partial a} = 1
+    \end{equation}
+
+    \item \textbf{Derivada respecto a $b$}:
+    Aplicando la regla de la cadena sobre la función trigonométrica:
+    \begin{equation}
+        \frac{\partial f}{\partial b} = \frac{1}{x^{c}} \cdot \cos(2\pi bx) \cdot (2\pi x) = \frac{2\pi x \cos(2\pi bx)}{x^{c}}
+    \end{equation}
+
+    \item \textbf{Derivada respecto a $c$}:
+    Utilizando la derivada de la potencia de base constante $\frac{d}{dc}x^{-c} = -x^{-c}\ln(x)$:
+    \begin{equation}
+        \frac{\partial f}{\partial c} = \sin(2\pi bx) \cdot \left( -x^{-c} \ln(x) \right) = -\frac{\sin(2\pi bx) \ln(x)}{x^{c}}
+    \end{equation}
+\end{enumerate}
+
+\subsection{Expresión Explícita del Gradiente $\nabla L(m)$}
+
+Aplicando la regla de la cadena a la función de pérdida $L(m)$, el gradiente vectorial se define como:
+\begin{equation}
+    \frac{\partial L}{\partial m_{j}} = \frac{1}{N} \sum_{i=1}^{N} (f(x_{i};m) - y_{i}) \frac{\partial f(x_{i};m)}{\partial m_{j}}
+\end{equation}
+
+Sustituyendo los resultados anteriores, el vector de gradiente es:
+\begin{equation}
+    \nabla L(m) = \begin{bmatrix}
+        \frac{1}{N} \sum_{i=1}^{N} (f(x_{i};m) - y_{i}) \\
+        \frac{1}{N} \sum_{i=1}^{N} (f(x_{i};m) - y_{i}) \left( \frac{2\pi x_{i} \cos(2\pi bx_{i})}{x_{i}^{c}} \right) \\
+        \frac{1}{N} \sum_{i=1}^{N} (f(x_{i};m) - y_{i}) \left( -\frac{\sin(2\pi bx_{i}) \ln(x_{i})}{x_{i}^{c}} \right)
+    \end{bmatrix}
+\end{equation}
+

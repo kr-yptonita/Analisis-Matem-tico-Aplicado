@@ -1,4 +1,24 @@
-
 \section{Inciso B: Generación de Datos (Ground Truth)}
-\textit{[Espacio reservado para la descripción del procedimiento de generación de datos con $m_{real}=[2.0, 1.5, 0.5]^{T}$ y ruido gaussiano].}
 
+Se generaron $200$ datos sintéticos equiespaciados en $x \in [0.5, 10]$. Se evaluó $f(x; m)$ con parámetros reales $m_{real} = [2.0, 1.5, 0.5]^T$ para obtener $y_{limpio}$. 
+
+Se añadió ruido gaussiano ($\mu=0, \sigma=0.5$) para simular condiciones reales:
+\begin{equation}
+    y = y_{limpio} + \mathcal{N}(0, 0.5^2)
+\end{equation}
+
+Implementación en Python:
+
+\begin{verbatim}
+def f(x, m):
+    a, b, c = m
+    return a + np.sin(2 * np.pi * b * x) / (x ** c)
+
+def generar_datos(N=200, m_real=[2.0, 1.5, 0.5], sigma=0.5, semilla=42):
+    np.random.seed(semilla)
+    x = np.linspace(0.5, 10, N)
+    y_limpio = f(x, m_real)
+    ruido = np.random.normal(0, sigma, N)
+    y = y_limpio + ruido
+    return x, y_limpio, y, m_real
+\end{verbatim}

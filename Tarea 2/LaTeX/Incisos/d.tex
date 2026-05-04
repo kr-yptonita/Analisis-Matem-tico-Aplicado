@@ -1,2 +1,34 @@
 \section{Inciso D: Análisis Visual y Numérico}
-\textit{[Espacio reservado para las gráficas de convergencia y ajuste de curva].}
+
+\subsection{Convergencia y Ajuste de Curva}
+
+Con parámetros iniciales $m_0 = [0.0, 0.5, 1.0]^T$, $\alpha = 0.05$ y $2000$ épocas, la pérdida decae rápidamente (Figura \ref{fig:convergencia}), minimizando el error de forma eficiente.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig_loss_005.png}
+    \caption{Curva de pérdida vs. Épocas, con $\alpha=0.05$.}
+    \label{fig:convergencia}
+\end{figure}
+
+La Figura \ref{fig:ajuste} muestra el modelo ajustado final. Pese a la no linealidad, Adam converge a un mínimo local que ajusta adecuadamente los datos.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.8\textwidth]{fig_ajuste.png}
+    \caption{Datos ruidosos, modelo real y modelo ajustado por el algoritmo Adam.}
+    \label{fig:ajuste}
+\end{figure}
+
+\subsection{Impacto de la Tasa de Aprendizaje y el Término RMSProp}
+
+Reducir $\alpha$ a $0.001$ ralentiza drásticamente la convergencia (Figura \ref{fig:alpha_comp}), requiriendo más épocas para alcanzar el mismo error.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig_alpha_comp.png}
+    \caption{Comparación de convergencia para $\alpha=0.05$ y $\alpha=0.001$.}
+    \label{fig:alpha_comp}
+\end{figure}
+
+El término RMSProp ($\sqrt{\hat{V}_t}$) equilibra los gradientes de magnitudes dispares. Parámetros como $b$ tienen gradientes oscilatorios grandes, mientras que $a$ tiene gradientes unitarios. Al escalar con la media móvil de gradientes al cuadrado $V_t$, se amortiguan saltos en $b$ y se aceleran cambios en $a$ y $c$, estabilizando la optimización.

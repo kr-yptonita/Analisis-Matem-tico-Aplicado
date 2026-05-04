@@ -1,13 +1,40 @@
-\documentclass[12pt]{report}
+\documentclass[12pt, mexican]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[spanish]{babel}
+\usepackage{babel}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{geometry}
 \usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize,
+    keywordstyle=\color{blue},
+    stringstyle=\color{teal},
+    commentstyle=\color{green!50!black},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=5pt,
+    backgroundcolor=\color{white},
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    tabsize=4,
+    captionpos=b,
+    breaklines=true,
+    breakatwhitespace=false,
+    extendedchars=true,
+    literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1 {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1 {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+}
 
 \geometry{a4paper, margin=2.5cm}
 
@@ -20,23 +47,35 @@
     \textbf{Universidad Nacional Autónoma de México} \\
     \Large Facultad de Ciencias \\
     \vspace{1cm}
-    \large Análisis Matemático Aplicado (Clave: 0919) \\
+    \large Análisis Matemático Aplicado \\
     \vspace{0.5cm}
     \textbf{Tarea 2: Optimización No Lineal y Estimación de Parámetros usando el Algoritmo Adam}
 }
-\author{Semestre 2026}
-\date{\today}
+\author{Karla Romina Juárez Torres}
+\date{4 de mayo del 2026}
 
 \begin{document}
 
 \maketitle
 
 \chapter{Introducción}
-El objetivo de esta práctica es implementar el algoritmo Adam para resolver un problema de regresión no lineal basado en el modelo:
+El objetivo de esta práctica es implementar y analizar el algoritmo de optimización Adam para resolver un problema de regresión no lineal basado en el modelo:
 \begin{equation}
     f(x;m)=a+\frac{\sin(2\pi bx)}{x^{c}}
 \end{equation}
 
+\input{Incisos/a.tex}
+\input{Incisos/b.tex}
+\input{Incisos/c.tex}
+\input{Incisos/d.tex}
 
+\appendix
+\chapter{Código Fuente}
+
+\section{Generación de Datos}
+\lstinputlisting[language=Python, caption={Generacion\_datos.py}]{../Scripts/Generacion_datos.py}
+
+\section{Optimizador Adam}
+\lstinputlisting[language=Python, caption={Optimizador\_Adam.py}]{../Scripts/Optimizador_Adam.py}
 
 \end{document}

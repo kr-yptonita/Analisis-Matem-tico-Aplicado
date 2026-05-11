@@ -1,0 +1,20 @@
+\section{Inciso C: Análisis del Forward y Backpropagation}
+\subsection{Diagrama de Flujo Analítico}
+% Aquí debes incluir tu diagrama propio[cite: 34].
+% \begin{figure}[h]
+%     \centering
+%     \includegraphics[width=0.8\textwidth]{diagrama_mlp.png}
+%     \caption{Estructura interna de un MLP con 2 capas ocultas.}
+% \end{figure}
+
+\subsection{Ecuaciones del Forward Propagation}
+Las ecuaciones matriciales que definen el paso hacia adelante son:
+\begin{equation}
+    Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}
+\end{equation}
+\begin{equation}
+    A^{[l]} = \sigma(Z^{[l]})
+\end{equation}
+
+\subsection{Backpropagation y Optimización Adam}
+Explicación de la Regla de la Cadena [cite: 36] y cómo el vector de gradientes se inyecta en el optimizador Adam para actualizar los pesos[cite: 37].

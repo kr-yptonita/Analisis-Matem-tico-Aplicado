@@ -1,45 +1,7 @@
 \section{Inciso C: Implementación del Optimizador Adam}
 
-Se implementó el optimizador Adam desde cero usando \texttt{numpy}, integrando el gradiente analítico del Inciso A y las ecuaciones de actualización de momentos.
+Lo unico que se ocupó de librerias fue \texttt{numpy} y \texttt{matplotlib} para la visualización del ajuste de la curva, ocupando el gradiente analítico del Inciso A y las ecuaciones de actualización de momentos
 
 Código base:
 
-\begin{verbatim}
-def gradiente_f(x, y, m):
-    a, b, c = m
-    error = f(x, m) - y
-    
-    df_da = np.ones_like(x)
-    df_db = (2 * np.pi * x * np.cos(2 * np.pi * b * x)) / (x ** c)
-    df_dc = - (np.sin(2 * np.pi * b * x) * np.log(x)) / (x ** c)
-    
-    grad_a = np.mean(error * df_da)
-    grad_b = np.mean(error * df_db)
-    grad_c = np.mean(error * df_dc)
-    
-    return np.array([grad_a, grad_b, grad_c])
-
-def optimizador_adam(x, y, m0, alfa=0.05, beta1=0.9, beta2=0.999, epsilon=1e-8, epocas=1000):
-    m = np.array(m0, dtype=float)
-    
-    M = np.zeros_like(m)
-    V = np.zeros_like(m)
-    
-    historial_perdida = []
-    
-    for t in range(1, epocas + 1):
-        gt = gradiente_f(x, y, m)
-        
-        perdida = 0.5 * np.mean((f(x, m) - y)**2)
-        historial_perdida.append(perdida)
-        
-        M = beta1 * M + (1 - beta1) * gt
-        V = beta2 * V + (1 - beta2) * (gt ** 2)
-        
-        M_hat = M / (1 - beta1 ** t)
-        V_hat = V / (1 - beta2 ** t)
-        
-        m = m - alfa * M_hat / (np.sqrt(V_hat) + epsilon)
-        
-    return m, historial_perdida
-\end{verbatim}
+\lstinputlisting[language=Python, caption={Optimizador\_Adam.py}]{../Scripts/Optimizador_Adam.py}

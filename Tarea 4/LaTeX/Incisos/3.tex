@@ -1,0 +1,27 @@
+\subsection*{Ejercicio 3. El Límite de Nyquist y el Aliasing}
+
+Defina y explique con sus propias palabras:
+
+\begin{enumerate}
+    \item \textbf{Frecuencia de Nyquist:} ¿Cuál es la relación mínima necesaria entre la frecuencia de muestreo ($f_s$) y la frecuencia máxima de la señal ($f_{\text{max}}$)?
+    \item \textbf{Aliasing:} Explique matemáticamente el fenómeno de ``solapamiento'' que ocurre cuando se viola el teorema de muestreo. ¿Cómo se ve reflejado en el espectro de potencias?
+    \item \textbf{Ventaneo (Windowing):} En señales finitas, la FFT asume periodicidad. Explique para qué sirven funciones como Hamming o Hanning y cómo mitigan el fenómeno de ``Spectral Leakage''.
+\end{enumerate}
+
+\vspace{0.5cm}
+
+\textbf{Definiciones Analíticas:}
+
+\begin{enumerate}
+    \item Frecuencia de Nyquist: En el procesamiento digital de señales tenemos que la fidelidad de la información depende de la tasa de adquisición de datos, es decir, del número de muestras que se toman por segundo entonces el Teorema de Muestreo de Nyquist-Shannon impone una restricción para reconstruir una señal analógica a partir de un conjunto discreto de muestras sin que se sufran perdidas ni alteraciones de la información original, es necesario que la frecuencia de muestreo $f_s$ sobrepase el doble de la componente espectral más alta $f_{\text{max}}$ presente en dicha señal, es decir $f_s > 2 f_{\text{max}}$, y entocnes el umbral $f_N = f_s / 2$ es conocido como la Frecuencia de Nyquist la cual dicta el límite superior o frontera de frecuencias que el sistema es capaz de resolver.
+    
+    \item Aliasing: Cuando la restricción de Nyquist es violada es decir $f_s \leq 2 f_{\text{max}}$ sucede un fenómeno de distorsión que llamamos aliasing o solapamiento donde el acto de muestrear una función equivale a modularla, es decir, multiplicarla por una infinita suma de deltas de Dirac y por el teorema de convolución que demostramos en el primer inciso esta multiplicación temporal queda como una convolución en el dominio de la frecuencia la cual genera infinitas réplicas del espectro original desplazadas cada $f_s$ hercios. 
+    
+    Mientras se respete el criterio de Nyquist, estas copias espectrales coexisten de manera separada y ortogonal, sin embargo al tener una tasa de muestreo deficiente el espaciamiento $f_s$ resulta insuficiente para albergar la anchura total del espectro y dado que las bandas se intersectan las colas de frecuencias altas de una réplica se suman a las frecuencias bajas de la réplica adyacente. 
+    
+    Esta interferencia constructiva se manifiesta como frecuencias fantasma con componentes de alta energía que superan el límite de Nyquist, que rebotan hacia la región observable y terminan camuflándose como armónicos de baja frecuencia que termina corrompiendo la lectura del periodograma.
+    
+    \item Ventaneo (Windowing): Al emplear algoritmos numéricos como la Transformada Rápida de Fourier (FFT), se asume que el fragmento de la señal discreta constituye un período de una señal que se repite de forma infinita. En la practica experimental al aislar un bloque de tiempo de una señal continua se tendria que es estadísticamente improbable que los valores de amplitud en los extremos inicial y final coincidan perfectamente. Asú al concatenar este bloque para cumplir con la periodicidad se terminan forzando discontinuidades o saltos abruptos en las fronteras
+    
+    Si consideramos que cualquier cambio súbito en el dominio del tiempo requiere de altas frecuencias para ser sintetizado, estas discontinuidades artificiales terminan inyectando energía al espectro lo que provoca que la potencia real de las componentes frecuenciales se derrame hacia los canales adyacentes que es un efecto perjudicial tipificado como \textit{Spectral Leakage} entonces para mitigar esta anomalía numérica aplicamos funciones de ventana como las de Hamming o Hanning que consisten en perfiles de ponderación suave que alcanzan su máximo en el centro del bloque y decaen asintóticamente a cero en los extremos asi al multiplicar la señal por dicha ventana logramos una transición periódica suave que atenúa los lóbulos laterales del espectro y purifica la lectura frecuencial.
+\end{enumerate}

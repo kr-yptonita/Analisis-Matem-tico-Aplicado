@@ -1,6 +1,35 @@
 \section{Inciso D: RAG (Generación Aumentada por Recuperación)}
-\subsection{Tubería RAG}
-Descripción del proceso: consulta, vectorización, similitud del coseno y generación[cite: 40].
 
-\subsection{Arquitectura del Motor y Self-Attention}
-Explicación del mecanismo de Atención Ponderada y por qué se usan Transformers[cite: 41, 42].
+Siguiendo con lo que hemos visto de arquitecturas de redes, RAG (\textit{Retrieval-Augmented Generation}) sirve para evitar que los modelos de lenguaje inventen cosas entonces como le damos información real y actualizada en el momento de preguntar, RAG conecta el procesamiento de lenguaje natural con el álgebra lineal de las bases de datos \cite{cite40}.
+
+Este proceso empieza convirtiendo la pregunta del usuario en un vector denso \textit{embedding} con el cual pasamos a la fase de recuperación, que básicamente es buscar los textos más parecidos a la pregunta. Donde usamos la similitud del coseno para medir qué tan alineados están el vector de la consulta ($q$) y los vectores de los documentos guardados ($d$):
+\begin{equation}
+    \text{sim}(q, d) = \frac{q \cdot d}{\|q\| \|d\|} = \frac{\sum_{i=1}^{n} q_i d_i}{\sqrt{\sum_{i=1}^{n} q_i^2} \sqrt{\sum_{i=1}^{n} d_i^2}}
+\end{equation}
+Este cálculo nos asegura traer la información que de verdad tiene que ver con lo que pidió el usuario.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node/.style={draw, rectangle, rounded corners, fill=gray!10, minimum width=2.5cm, minimum height=1cm, align=center},
+        arrow/.style={-{Stealth}, thick}
+    ]
+        % Nodos del flujo
+        \node[node, fill=blue!10] (query) {Consulta del\\Usuario};
+        \node[node, right=1.5cm of query, fill=blue!10] (vector) {Embedding\\(Vectorización)};
+        \node[node, below=1cm of vector, fill=orange!10] (db) {Base de Datos\\Vectorial};
+        \node[node, left=4.5cm of db, fill=green!10] (gen) {Generador\\(Transformer)};
+        \node[node, left=1.5cm of gen, fill=red!10] (ans) {Respuesta\\Final};
+
+        % Flechas
+        \draw[arrow] (query) -- (vector);
+        \draw[arrow] (vector) -- (db) node[midway, right] {Búsqueda Simil.};
+        \draw[arrow] (db) -- (gen) node[midway, below] {Contexto + Query};
+        \draw[arrow] (gen) -- (ans);
+    \end{tikzpicture}
+    \caption{Arquitectura de RAG: búsqueda vectorial más generación de texto.}
+\end{figure}
+
+Ahora ya que se recupera el contexto este se le pasa al modelo generador, que suele ser un Transformer \cite{cite41}. Aquí el diseño del Transformer es clave ya que le pasamos la pregunta original pegada a varios párrafos de texto y el modelo tiene que saber a qué hacerle caso y para eso está el \textit{Self-Attention}.
+
+Multiplicando las matrices de consulta, clave y valor, la red le asigna un "peso" o nivel de importancia a cada palabra de todo este texto largo. Esto permite que el modelo se enfoque únicamente en la información que de verdad sirve de la base de datos, para así poder darnos una respuesta correcta y bien fundamentada en lugar de distraerse con el resto del texto \cite{cite42}.

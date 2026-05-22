@@ -1,20 +1,66 @@
 \section{Inciso C: Análisis del Forward y Backpropagation}
-\subsection{Diagrama de Flujo Analítico}
-% Aquí debes incluir tu diagrama propio[cite: 34].
-% \begin{figure}[h]
-%     \centering
-%     \includegraphics[width=0.8\textwidth]{diagrama_mlp.png}
-%     \caption{Estructura interna de un MLP con 2 capas ocultas.}
-% \end{figure}
 
-\subsection{Ecuaciones del Forward Propagation}
-Las ecuaciones matriciales que definen el paso hacia adelante son:
+El ciclo de entrenamiento de una red neuronal es un proceso de dos pasos muy relacionado con evaluar funciones y calcular derivadas. El primer paso, el \textit{Forward Propagation} que lo que trata es de ir evaluando los datos capa a capa 
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.5cm,
+        every node/.style={draw, circle, minimum size=0.8cm},
+        input/.style={fill=blue!20},
+        hidden/.style={fill=green!20},
+        output/.style={fill=red!20},
+        arrow/.style={-{Stealth}, shorten >=1pt}
+    ]
+        % Capa de Entrada
+        \foreach \i in {1,2,3}
+            \node[input] (I-\i) at (0, -\i) {$x_{\i}$};
+        \node at (0, -4) {$\vdots$};
+        
+        % Capa Oculta 1
+        \foreach \i in {1,2,3,4}
+            \node[hidden] (H1-\i) at (2.5, -\i+0.5) {$a^{(1)}_{\i}$};
+            
+        % Capa Oculta 2
+        \foreach \i in {1,2,3,4}
+            \node[hidden] (H2-\i) at (5, -\i+0.5) {$a^{(2)}_{\i}$};
+            
+        % Capa de Salida
+        \node[output] (O) at (7.5, -2) {$\hat{y}$};
+        
+        % Conexiones Capa Entrada a H1
+        \foreach \i in {1,2,3}
+            \foreach \j in {1,2,3,4}
+                \draw[arrow, opacity=0.3] (I-\i) -- (H1-\j);
+                
+        % Conexiones H1 a H2
+        \foreach \i in {1,2,3,4}
+            \foreach \j in {1,2,3,4}
+                \draw[arrow, opacity=0.3] (H1-\i) -- (H2-\j);
+                
+        % Conexiones H2 a Salida
+        \foreach \i in {1,2,3,4}
+            \draw[arrow] (H2-\i) -- (O);
+
+        % Etiquetas de flujo
+        \draw[blue, thick, ->] (0, 0) -- (7.5, 0) node[midway, above, draw, ellipse, fill=blue!5] {Forward Propagation};
+        \draw[red, thick, <-] (0, -4.5) -- (7.5, -4.5) node[midway, below, draw, ellipse, fill=red!5] {Backpropagation (Gradientes)};
+        
+    \end{tikzpicture}
+    \caption{Representación del flujo en un MLP. La propagación del error va en sentido contrario a la predicción \cite{cite34}.}
+    \label{fig:tikz_mlp}
+\end{figure}
+
+De este modo cuando metemos un dato a la red este pasa por todas las capas ocultas $l$ como se ve en la Figura \ref{fig:tikz_mlp}, entonces si hacemos operaciones lineales $Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}$ seguidas de funciones de activación $A^{[l]} = \sigma(Z^{[l]})$ al final obtenemos una predicción $\hat{y}$. Luego, usamos la función de costo $\mathcal{L}$ para medir qué tan lejos quedó nuestra predicción del valor real esperado.
+
+
+Ya que tenemos el error, hacemos \textit{Backpropagation} que no es más que aplicar la Regla de la Cadena donde la idea es ver cómo un pequeño cambio en cada peso $W^{[l]}$ afecta al error total de la red. Así sacamos el gradiente multiplicando las derivadas desde la salida hacia atrás:
 \begin{equation}
-    Z^{[l]} = W^{[l]}A^{[l-1]} + b^{[l]}
-\end{equation}
-\begin{equation}
-    A^{[l]} = \sigma(Z^{[l]})
+    \frac{\partial \mathcal{L}}{\partial W^{[l]}} = \frac{\partial \mathcal{L}}{\partial A^{(L)}} \cdot \left( \prod_{k=l+1}^{L} \frac{\partial A^{(k)}}{\partial A^{(k-1)}} \right) \cdot \frac{\partial A^{(l)}}{\partial Z^{(l)}} \cdot \frac{\partial Z^{(l)}}{\partial W^{(l)}}
 \end{equation}
 
-\subsection{Backpropagation y Optimización Adam}
-Explicación de la Regla de la Cadena [cite: 36] y cómo el vector de gradientes se inyecta en el optimizador Adam para actualizar los pesos[cite: 37].
+Esto nos da el vector gradiente que indica hacia dónde crece más el error, aquí es donde entra el optimizador Adam, como vimos en la Tarea 2 al cual le pasamos estos gradientes y, en lugar de dar un paso fijo, Adam los usa para calcular promedios continuos $\hat{m}_t$ y $\hat{v}_t$ y luego hace la actualización:
+\begin{equation}
+    \theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t
+\end{equation}
+Así, el optimizador ajusta el tamaño del paso para cada parámetro por separado, esta conexión entre cálculo multivariado y optimización es lo que hace posible entrenar redes neuronales profundas de forma estable y sin que se queden atoradas en mínimos locales

@@ -1,0 +1,60 @@
+\subsection*{Ejercicio 2. Cálculo de Integral Directa}
+
+Calcule la Transformada de Fourier de la función pulso rectangular unitario $\Pi(t)$, definida como $1$ para $|t| < 1/2$ y $0$ en otro caso. Exprese el resultado en términos de la función $\operatorname{sinc}(x) = \frac{\sin(\pi x)}{\pi x}$.
+
+\vspace{0.5cm}
+
+\textbf{Desarrollo:}
+
+Recordando que esta transformación mapea una señal del dominio temporal al dominio de las frecuencias angulares partimos de
+\begin{equation}
+    \mathcal{F}\{f(t)\} = \int_{-\infty}^{\infty} f(t) e^{-i\omega t} \, dt
+\end{equation}
+
+Ahora considerando la definición seccionalmente continua de $\Pi(t)$ que toma el valor de uno exclusivamente en el intervalo abierto de $-1/2 < t < 1/2$ y se anula en cualquier otro instante la integral colapsa a una integral definida sobre este soporte acotado
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \int_{-1/2}^{1/2} (1) e^{-i\omega t} \, dt
+\end{equation}
+
+Al integrar tenemo
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \left[ \frac{e^{-i\omega t}}{-i\omega} \right]_{-1/2}^{1/2}
+\end{equation}
+
+Ahora si evaluamos en los límites de integración:
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \frac{e^{-i\omega(1/2)} - e^{-i\omega(-1/2)}}{-i\omega} = \frac{e^{-i\omega/2} - e^{i\omega/2}}{-i\omega}
+\end{equation}
+
+Multiplicamos por $-1$ en numerador y denominador para reordenar los términos del numerador tenemos
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \frac{e^{i\omega/2} - e^{-i\omega/2}}{i\omega}
+\end{equation}
+
+Ahora la estructura de la ecuación indica la aplicación de la identidad de Euler para la función seno que dice que $\sin(\theta) = \frac{e^{i\theta} - e^{-i\theta}}{2i}$ y al proyectar esta identidad sobre nuestra expresión con el argumento $\theta = \omega/2$ la ecuación se transforma en
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \frac{2i \sin(\omega/2)}{i\omega} = \frac{2 \sin(\omega/2)}{\omega}
+\end{equation}
+
+Esta última forma se muestra la naturaleza oscilatoria y decreciente del espectro y si reacomodamos el factor $2$ en el denominador obtenemos
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \frac{\sin(\omega/2)}{\omega/2}
+\end{equation}
+
+Ahora esto nos exige expresar este resultado en términos de la función seno cardinal normalizada y para acatar esta convención, proponemos un argumento $x$ tal que garantice la equivalencia $\pi x = \omega / 2$ y por lo tanto tenemos que $x = \frac{\omega}{2\pi}$ y al insertar este cambio de variable obtenemos que
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \frac{\sin\left(\pi \left(\frac{\omega}{2\pi}\right)\right)}{\pi \left(\frac{\omega}{2\pi}\right)} = \operatorname{sinc}\left(\frac{\omega}{2\pi}\right)
+\end{equation}
+
+Entonces la Transformada de Fourier del pulso rectangular en el dominio del tiempo se manifiesta como una función seno cardinal normalizada en el dominio de la frecuencia
+
+\begin{equation}
+    \mathcal{F}\{\Pi(t)\} = \operatorname{sinc}\left(\frac{\omega}{2\pi}\right)
+\end{equation}

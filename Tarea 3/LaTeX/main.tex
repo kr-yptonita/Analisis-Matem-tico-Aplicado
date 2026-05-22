@@ -8,6 +8,13 @@
 \usepackage{geometry}
 \usepackage{hyperref}
 \usepackage{titlesec}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, chains, positioning, shapes.geometric}
+\usepackage{csquotes}
+\usepackage[backend=bibtex, style=numeric, sorting=none]{biblatex}
+\addbibresource{referencias.bib}
 
 % --- Configuración de Página ---
 \geometry{letterpaper, margin=2.5cm}
@@ -27,5 +34,8 @@
 \input{Incisos/b.tex}
 \input{Incisos/c.tex}
 \input{Incisos/d.tex}
+
+\newpage
+\printbibliography[title={Bibliografía}]
 
 \end{document}

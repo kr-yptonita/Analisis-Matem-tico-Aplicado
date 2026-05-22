@@ -1,6 +1,37 @@
 \section{Inciso B: Arquitecturas de Redes Neuronales}
-\begin{itemize}
-    \item \textbf{Perceptrón Multicapa (MLP):} Fundamento y caso de uso[cite: 30].
-    \item \textbf{Redes Neuronales Convolucionales (CNN):} Relación con la convolución espacial[cite: 31].
-    \item \textbf{Transformers:} Fundamento matemático y uso en modelos de lenguaje[cite: 32].
-\end{itemize}
+
+Ahora la forma en la que diseñamos una red neuronal define cómo va a trabajar el optimizador así el Perceptrón Multicapa es la arquitectura más básica y se basa en aplicar varias transformaciones lineales seguidas de funciones no lineales. En esta estructura, cada capa se calcula con la ecuación $a^{(l)} = \sigma(W^{(l)} a^{(l-1)} + b^{(l)})$. Aunque un perceptrón puede aproximar cualquier función, tener todas las neuronas conectadas hace que requiera muchos parámetros y se sobreajuste fácilmete cuando usamos datos muy grandes, como imágenes.
+
+Para resolver esto usamos las Redes Neuronales Convolucionales CNN. En lugar de aprender pesos para toda la entrada a la vez, las CNN cambian la multiplicación normal de matrices por la convolución, así el filtro $K$ se desliza sobre la entrada $I$
+\begin{equation}
+    (I * K)(i, j) = \sum_{m} \sum_{n} I(i+m, j+n) K(m, n)
+\end{equation}
+Esto nos ayuda a detectar patrones sin importar en qué parte de la imagen estén, y usa muchos menos parámetros porque la red "recicla" los mismos pesos en toda la imagen.
+
+Por otro lado si estamos trabajando con datos que van en un orden específico como texto o series de tiempo usamos Redes Neuronales Recurrentes (RNN) en estas, el estado actual no solo depende de lo que estamos viendo ahorita, sino también de lo que se vio antes, funcionando como una especie de memoria con ell problema de que al entrenarlas los gradientes tienden a desvanecerse y la red olvida rápido las cosas del pasado.
+
+De este nuevo problema es de donde nacen los Transformers, que no necesitan procesar las cosas en orden su base es que el mecanismo de atención global \textit{Self-Attention}:
+\begin{equation}
+    \text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+Multiplicando las matrices de consulta ($Q$), clave ($K$) y valor ($V$), el modelo calcula qué tanta relación hay entre todas las partes de la secuencia al mismo tiempo esto hace que el entrenamiento sea más estable y que no importe qué tan lejos estén las palabras entre sí en un texto.
+
+\subsection{Comparativa de Arquitecturas}
+
+Aquí hay una tabla que compara las características y operaciones de estas redes
+
+\begin{table}[h!]
+\centering
+\caption{Comparativa Técnica de Arquitecturas de Redes Neuronales}
+\label{tab:arquitecturas_comp}
+\begin{tabular}{|l|l|l|l|}
+\hline
+\rowcolor[HTML]{EFEFEF} 
+\textbf{Característica} & \textbf{MLP} & \textbf{CNN} & \textbf{Transformers} \\ \hline
+\textbf{Estructura de Datos} & Tabulares / Vectores & Imágenes / Rejillas & Secuencias / Series \\ \hline
+\textbf{Conectividad} & Total (\textit{Dense}) & Local (Filtros) & Global (Atención) \\ \hline
+\textbf{Eficiencia de Pesos} & Baja (Excesivos) & Alta (Compartidos) & Media (Escalable) \\ \hline
+\textbf{Ventaja Clave} & Simplicidad y Versatilidad & Invarianza Espacial & Contexto Global \\ \hline
+\textbf{Operación Base} & Producto Punto & Convolución & \textit{Scaled Dot-Product} \\ \hline
+\end{tabular}
+\end{table}

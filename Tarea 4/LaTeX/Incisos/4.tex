@@ -1,0 +1,45 @@
+\subsection*{Ejercicio 4. Estructura de la DFT y FFT}
+
+Analice el siguiente diagrama de flujo que representa la lógica de cómputo para transformar una señal del dominio del tiempo al de la frecuencia.
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[
+        node distance=2cm and 1cm,
+        box/.style={draw, rectangle, align=center, minimum width=3cm, minimum height=1cm},
+        arrow/.style={-Latex, thick}
+    ]
+        % Nodes
+        \node[box] (signal) {Señal Discreta $x[n]$};
+        \node[box, below left=of signal] (dft) {DFT Directa ($\mathcal{O}(N^2)$)};
+        \node[box, below right=of signal] (fft) {FFT (Cooley-Tukey)\\($\mathcal{O}(N \log N)$)};
+        \node[box, below=3cm of signal] (espectro) {Espectro $X[k]$};
+
+        % Arrows and Labels
+        \draw[arrow] (signal) -| (dft) node[pos=0.25, left, align=right] {Muestreo a $f_s$\\Condición: $f_s > 2f_{\text{max}}$};
+        \draw[arrow] (signal) -| (fft);
+        \draw[arrow] (dft) |- (espectro);
+        \draw[arrow] (fft) |- (espectro);
+    \end{tikzpicture}
+    \caption{Diagrama de flujo de la transformación de señales.}
+    \label{fig:diagrama_fft}
+\end{figure}
+
+\vspace{0.5cm}
+
+\textbf{Análisis de Flujo y Complejidad:}
+
+El proceso inicia en la etapa de muestreo, donde el diagrama resalta la necesidad de cumplir con el criterio de Nyquist como necesitamos eso para poder digitalizar una señal analógicay esto funciona para evitar el antialiasing antes de aplicar cualquier transformación
+
+Una vez que se dispone de la secuencia digital $x[n]$, el flujo se divide en dos procesos, sin embargo, convergen en el mismo resultado esto nos deja claro que la Transformada Rápida de Fourier no es una aproximación numérica sino una ruta matemáticamente idéntica a la Transformada Discreta de Fourier.
+
+La diferencia entre ambos procesos radica en el costo computacional:
+\begin{itemize}
+    \item La DFT Directa sigue la definición matemática formal mediante la sumatoria:
+    \begin{equation*}
+    X[k] = \sum_{n=0}^{N-1} x[n] e^{-i \frac{2\pi}{N} k n}
+    \end{equation*}
+    Al implementarse a fuerza bruta, obliga al sistema a realizar un número de multiplicaciones complejas proporcional al cuadrado del número de muestras, lo que genera una complejidad algorítmica de orden $\mathcal{O}(N^2)$. Con los enormes volúmenes de datos, este crecimiento cuadrático se vuelve rápidamente inviable en la práctica.
+    
+    \item La FFT de Cooley-Tukey tiene la estrategia de ``divide y vencerás'' para aprovechar las propiedades de simetría y periodicidad de las exponenciales complejas como los conocidos \textit{twiddle factors} o factores de giro para dividir la señal original en transformaciones mucho más pequeñas por ejemplo, separando las muestras pares de las impares, lo que reduce drásticamente las operaciones necesarias y termina colapsando la complejidad a $\mathcal{O}(N \log_2 N)$.
+\end{itemize}

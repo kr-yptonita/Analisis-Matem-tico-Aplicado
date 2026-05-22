@@ -1,0 +1,56 @@
+\subsection*{Ejercicio 1. El Teorema de la Convolución}
+
+Demuestre formalmente que la Transformada de Fourier de la convolución de dos funciones, $f(t)$ y $g(t)$, es igual al producto de sus transformadas individuales. Es decir, demuestre que:
+
+\begin{equation}
+\mathcal{F}\{(f * g)(t)\} = F(\omega) \cdot G(\omega)
+\end{equation}
+
+\textit{Pista: Utilice la definición de la integral de convolución y realice un cambio de variable en la integral doble resultante, justificando la inversión del orden de integración mediante el Teorema de Fubini.}
+
+\vspace{0.5cm}
+
+\textbf{Demostración:}
+
+Partiendo directamente de la definición analítica de la Transformada de Fourier, obtenemos la siguiente expresión:
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = \int_{-\infty}^{\infty} (f * g)(t) e^{-i\omega t} \, dt
+\end{equation}
+
+Expandiendo el término de la convolución utilizando su propia definición integral, esto es, $(f * g)(t) = \int_{-\infty}^{\infty} f(\tau) g(t - \tau) \, d\tau$ y al sustituir esta relación en nuestra ecuación original queda la siguiente integral doble
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = \int_{-\infty}^{\infty} \left( \int_{-\infty}^{\infty} f(\tau) g(t - \tau) \, d\tau \right) e^{-i\omega t} \, dt
+\end{equation}
+
+Considerando que tanto $f$ como $g$ pertenecen al espacio de funciones absolutamente integrables, podemos garantizar que la función conjunta es integrable sobre $\mathbb{R}^2$ y con esto invocar el Teorema de Fubini así se invierte el orden de integración
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = \int_{-\infty}^{\infty} f(\tau) \left( \int_{-\infty}^{\infty} g(t - \tau) e^{-i\omega t} \, dt \right) \, d\tau
+\end{equation}
+
+Si definimos $u = t - \tau$ tenempos $dt = du$ y como los límites de integración abarcan toda la recta real estos terminan permaneciendo invariantes bajo la traslación, ahora sustituyendo $t = u + \tau$ en el exponente complejo, obtenemos
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = \int_{-\infty}^{\infty} f(\tau) \left( \int_{-\infty}^{\infty} g(u) e^{-i\omega (u + \tau)} \, du \right) \, d\tau
+\end{equation}
+
+Ahora si factorizamos el término $e^{-i\omega (u + \tau)}$ como el producto $e^{-i\omega u} e^{-i\omega \tau}$ y dado que $e^{-i\omega \tau}$ es completamente independiente de $u$ queda
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = \int_{-\infty}^{\infty} f(\tau) e^{-i\omega \tau} \left( \int_{-\infty}^{\infty} g(u) e^{-i\omega u} \, du \right) \, d\tau
+\end{equation}
+Notesé que la integral interna entre paréntesis corresponde de manera exacta a la definición de la Transformada de Fourier de la función $g(t)$ si llamamos a esto $G(\omega)$ y como esto ya no depende de la variable de integración externa $\tau$, funge como una constante que multiplica a la integral restante entonces tenemos
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = G(\omega) \int_{-\infty}^{\infty} f(\tau) e^{-i\omega \tau} \, d\tau
+\end{equation}
+
+Entonces la integral que sobrevive es la Transformada de Fourier de la función $f(t)$ osea $F(\omega)$, por lo que, al sustituir este último término tenemos
+
+\begin{equation}
+    \mathcal{F}\{(f * g)(t)\} = G(\omega) \cdot F(\omega) = F(\omega) \cdot G(\omega)
+\end{equation}
+
+De esta manera se confirma que la convolución en el dominio del tiempo es equivalente a la multiplicación en el dominio de la frecuencia. \hfill $\blacksquare$

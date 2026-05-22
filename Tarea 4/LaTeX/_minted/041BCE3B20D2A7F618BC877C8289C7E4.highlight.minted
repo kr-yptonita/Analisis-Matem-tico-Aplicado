@@ -1,0 +1,38 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{numpy}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{np}
+\PYG{k+kn}{import}\PYG{+w}{ }\PYG{n+nn}{matplotlib.pyplot}\PYG{+w}{ }\PYG{k}{as}\PYG{+w}{ }\PYG{n+nn}{plt}
+\PYG{k+kn}{from}\PYG{+w}{ }\PYG{n+nn}{numpy.fft}\PYG{+w}{ }\PYG{k+kn}{import} \PYG{n}{fft}\PYG{p}{,} \PYG{n}{ifft}\PYG{p}{,} \PYG{n}{fftfreq}
+
+\PYG{c+c1}{\PYGZsh{} Parámetros}
+\PYG{n}{fs} \PYG{o}{=} \PYG{l+m+mi}{1000}
+\PYG{n}{T} \PYG{o}{=} \PYG{l+m+mf}{2.0}
+\PYG{n}{t} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{linspace}\PYG{p}{(}\PYG{l+m+mi}{0}\PYG{p}{,} \PYG{n}{T}\PYG{p}{,} \PYG{n+nb}{int}\PYG{p}{(}\PYG{n}{fs} \PYG{o}{*} \PYG{n}{T}\PYG{p}{),} \PYG{n}{endpoint}\PYG{o}{=}\PYG{k+kc}{False}\PYG{p}{)}
+\PYG{n}{N} \PYG{o}{=} \PYG{n+nb}{len}\PYG{p}{(}\PYG{n}{t}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Señal A (Chirp): s1(t) = sin(2*pi*(10 + 40t)*t)}
+\PYG{n}{s1} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sin}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{pi} \PYG{o}{*} \PYG{p}{(}\PYG{l+m+mi}{10} \PYG{o}{+} \PYG{l+m+mi}{40} \PYG{o}{*} \PYG{n}{t}\PYG{p}{)} \PYG{o}{*} \PYG{n}{t}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Señal B (Salto de Frecuencia):}
+\PYG{c+c1}{\PYGZsh{} s2(t) = sin(2*pi*20*t) para t \PYGZlt{} 1, y sin(2*pi*80*t) para t \PYGZgt{}= 1}
+\PYG{n}{s2} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{piecewise}\PYG{p}{(}\PYG{n}{t}\PYG{p}{,} \PYG{p}{[}\PYG{n}{t} \PYG{o}{\PYGZlt{}} \PYG{l+m+mi}{1}\PYG{p}{,} \PYG{n}{t} \PYG{o}{\PYGZgt{}=} \PYG{l+m+mi}{1}\PYG{p}{],} \PYG{p}{[}
+    \PYG{k}{lambda} \PYG{n}{t}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sin}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{pi} \PYG{o}{*} \PYG{l+m+mi}{20} \PYG{o}{*} \PYG{n}{t}\PYG{p}{),}
+    \PYG{k}{lambda} \PYG{n}{t}\PYG{p}{:} \PYG{n}{np}\PYG{o}{.}\PYG{n}{sin}\PYG{p}{(}\PYG{l+m+mi}{2} \PYG{o}{*} \PYG{n}{np}\PYG{o}{.}\PYG{n}{pi} \PYG{o}{*} \PYG{l+m+mi}{80} \PYG{o}{*} \PYG{n}{t}\PYG{p}{)}
+\PYG{p}{])}
+
+\PYG{c+c1}{\PYGZsh{} Transformada de Fourier}
+\PYG{n}{S1} \PYG{o}{=} \PYG{n}{fft}\PYG{p}{(}\PYG{n}{s1}\PYG{p}{)}
+\PYG{n}{S2} \PYG{o}{=} \PYG{n}{fft}\PYG{p}{(}\PYG{n}{s2}\PYG{p}{)}
+\PYG{n}{freqs} \PYG{o}{=} \PYG{n}{fftfreq}\PYG{p}{(}\PYG{n}{N}\PYG{p}{,} \PYG{l+m+mi}{1}\PYG{o}{/}\PYG{n}{fs}\PYG{p}{)}
+
+\PYG{c+c1}{\PYGZsh{} Filtro Pasa\PYGZhy{}Altas}
+\PYG{n}{cutoff} \PYG{o}{=} \PYG{l+m+mi}{50}
+\PYG{n}{high\PYGZus{}pass\PYGZus{}filter} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{abs}\PYG{p}{(}\PYG{n}{freqs}\PYG{p}{)} \PYG{o}{\PYGZgt{}=} \PYG{n}{cutoff}
+
+\PYG{c+c1}{\PYGZsh{} Aplica el filtro en el dominio de la frecuencia}
+\PYG{n}{S1\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{S1} \PYG{o}{*} \PYG{n}{high\PYGZus{}pass\PYGZus{}filter}
+\PYG{n}{S2\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{S2} \PYG{o}{*} \PYG{n}{high\PYGZus{}pass\PYGZus{}filter}
+
+\PYG{c+c1}{\PYGZsh{} Aplica la Transformada Inversa para obtener señales filtradas en el tiempo}
+\PYG{n}{s1\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{real}\PYG{p}{(}\PYG{n}{ifft}\PYG{p}{(}\PYG{n}{S1\PYGZus{}filtered}\PYG{p}{))}
+\PYG{n}{s2\PYGZus{}filtered} \PYG{o}{=} \PYG{n}{np}\PYG{o}{.}\PYG{n}{real}\PYG{p}{(}\PYG{n}{ifft}\PYG{p}{(}\PYG{n}{S2\PYGZus{}filtered}\PYG{p}{))}
+\end{MintedVerbatim}

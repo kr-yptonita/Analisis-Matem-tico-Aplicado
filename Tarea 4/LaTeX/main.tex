@@ -1,0 +1,47 @@
+\documentclass[12pt]{article}
+
+% --- Paquetes Básicos ---
+\usepackage[utf8]{inputenc}
+\usepackage[mexican]{babel}
+\usepackage{amsmath, amssymb, amsfonts} % Para rigor matemático
+\usepackage{graphicx} % Para insertar diagramas 
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{titlesec}
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, chains, positioning, shapes.geometric}
+\usepackage{minted} % Para código Python
+\usepackage{csquotes}
+\usepackage[backend=bibtex, style=numeric, sorting=none]{biblatex}
+% \addbibresource{referencias.bib} % Descomentar y crear el archivo si se necesitan referencias
+
+% --- Configuración de Página ---
+\geometry{letterpaper, margin=2.5cm}
+\titleformat{\section}{\large\bfseries}{\thesection.}{0.5em}{}
+
+% --- Información del Documento ---
+\title{Tarea 4: La Transformada de Fourier, Muestreo y \\ Procesamiento de Señales No Estacionarias}
+\author{Karla Romina Juárez Torres \\ \small Análisis Matemático Aplicado}
+\date{318013712}
+
+\begin{document}
+
+\maketitle
+
+\section*{1. Teoría Analítica: La Transformada Continua}
+\input{Incisos/1.tex}
+\input{Incisos/2.tex}
+
+\section*{2. Procesamiento Digital de Señales (DSP)}
+\input{Incisos/3.tex}
+\input{Incisos/4.tex}
+
+\section*{3. Laboratorio: Señales No Estacionarias}
+\input{Incisos/5.tex}
+
+% \newpage
+% \printbibliography[title={Bibliografía}]
+
+\end{document}

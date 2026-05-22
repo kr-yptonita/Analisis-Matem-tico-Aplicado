@@ -1,8 +1,21 @@
 \section{Inciso A: Paradigmas de Aprendizaje}
-% Investigue y defina matemáticamente la diferencia entre los tres paradigmas[cite: 22].
-\subsection{Aprendizaje Supervisado}
-Definición matemática y ejemplo industrial[cite: 24].
-\subsection{Aprendizaje No Supervisado}
-Definición matemática y ejemplo industrial[cite: 25].
-\subsection{Aprendizaje por Refuerzo (RL)}
-Definición matemática basada en Cadenas de Markov[cite: 26].
+
+Primeramente es importante recalcar que el entrenamiento de una red neuronal artificial es en el fondo un problema de optimización numérica multivariada y bajo esta perspectiva, los paradigmas de aprendizaje automático pueden entenderse como distintas formas de plantear la función que queremos minimizar o maximizar, dependiendo de qué tipo de retroalimentación tengamos al entrenar.
+
+En el aprendizaje supervisado, el modelo aprende a relacionar entradas con salidas usando datos que ya tienen etiquetas, es decir dado un conjunto de datos $D = \{(x_i, y_i)\}_{i=1}^n$ con $x_i \in \mathbb{R}^d$, el objetivo es encontrar una función $f: X \to Y$ que reduzca el error de predicción. Esto se plantea como la minimización de una función de pérdida $\mathcal{L}$:
+\begin{equation}
+    \min_{\theta} \frac{1}{n} \sum_{i=1}^{n} \mathcal{L}(f(x_i; \theta), y_i) + \lambda \Omega(\theta)
+\end{equation}
+El término de regularización $\lambda \Omega(\theta)$ ayuda a controlar qué tan complejo es el modelo para que no se sobreajuste a los datos de entrenamiento. Por ejemplo, en la industria, esto sirve para predecir cuándo va a fallar una máquina a partir de su historial.
+
+Por otro lado, cuando no tenemos etiquetas, pasamos al aprendizaje no supervisado. Aquí el objetivo es entender cómo se distribuyen los datos o encontrar patrones ocultos en ellos. En el caso de K-means, buscamos agrupar los datos minimizando la distancia dentro de cada grupo:
+\begin{equation}
+    J = \sum_{j=1}^{k} \sum_{x_i \in S_j} \|x_i - \mu_j\|^2
+\end{equation}
+Esto nos permite clasificar los datos sin necesidad de tener las respuestas de antemano, lo cual es muy útil para perfilar clientes o agrupar flotas de vehículos con comportamientos similares.
+
+Por último el aprendizaje por refuerzo trata sobre cómo tomar una serie de decisiones en un entorno que cambia, lo cual se modela con un Proceso de Decisión de Markov asó el modelo aprende probando y ajusta su estrategia $\pi(a|s)$ para conseguir la mayor cantidad de recompensas a largo plazo, calculada como $G_t = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}$ Esto nos lleva a la Ecuación de Bellman:
+\begin{equation}
+    V^\pi(s) = \sum_{a} \pi(a|s) \sum_{s', r} p(s', r | s, a) [r + \gamma V^\pi(s')]
+\end{equation}
+Así nos aseguramos que al optimizar estamos tomando en cuenta los efectos futuros de cada decisión, y no sólo el beneficio inmediato.

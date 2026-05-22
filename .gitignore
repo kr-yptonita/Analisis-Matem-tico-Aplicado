@@ -9,3 +9,6 @@
 *.pdf
 *.gz
 test.*
+*.xml
+*.bcf
+main-blx.bib

@@ -1,0 +1,19 @@
+\subsection*{Ejercicio 2. Resolución en el Plano Tiempo-Frecuencia} %
+\noindent Explique, utilizando el Principio de Incertidumbre de Heisenberg aplicado al procesamiento de señales $(\Delta t\cdot\Delta\omega\ge1/2)$, la diferencia fundamental entre el enventanado de la Transformada de Fourier a Corto Plazo (STFT) y el mecanismo de dilatación/compresión de la Transformada Ondicular Continua (CWT). %
+¿Por qué la CWT es superior para analizar señales transitorias de alta frecuencia? %
+
+\vspace{0.5cm}
+\noindent \textbf{Respuesta:} \\
+% Escribe tu justificación teórica aquí
+Al aplicar este principio a señales nos encontramos con la desigualdad $\Delta t \cdot \Delta \omega \ge 1/2$ es decir no podemos ser infinitamente precisos al medir a la vez cuándo ocurre el evento que se estudie y qué frecuencias lo componen ya que siempre habrá un límite impuesto por lo anterior dicho
+
+\textbf{Diferencias entre STFT y CWT:}
+\begin{itemize}
+    \item \textbf{STFT (Transformada de Fourier a Corto Plazo):} Utiliza una ventana de tamaño y forma inamovibles durante todo el proceso lo que hace rígidas las resoluciones $\Delta t$ y $\Delta \omega$ pero si afinamos la ventana para ubicar mejor los eventos en el tiempo tendriamos problemas para distinguir frecuencias similares y viceversa
+    
+    \item \textbf{CWT (Transformada Ondicular Continua):} Utiliza una \textit{wavelet madre} que se estira y encoge lo que nos da un margen totalmente dinamico así la \textit{wavelet} se ajusta de forma inversamente proporcional a la frecuencia que estemos analizando aunque se sigue respetando a Heisenberg y el área mínima de $\Delta t \cdot \Delta \omega$, lo que nos permite moldear sus dimensiones según lo que la señal nos exija en cada momento
+\end{itemize}
+
+\textbf{¿Por qué la CWT es mejor para atrapar transitorios de alta frecuencia?}
+
+Notemos que los transitorioos suelen ser saltos bruscos que terminan pasando rapidamente es decir aportan altas frecuencias de golpe al espectro entonces CWT busca esas frecuencias altas usando parámetros de escala $a$ pequeñps y la wavelet se comprime en el tiempo lo que nos da una resolución dinamica y podemos hacer zoom en el tiempo, si intentáramos analizar esto con la STFT su ventana fija terminaría abarcando el transitorio y frecuencias de su alrededor dejándonos una idea borrosa de cuándo pasó realmente.\vspace{1cm}

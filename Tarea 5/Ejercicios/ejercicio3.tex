@@ -1,0 +1,50 @@
+\subsection*{Ejercicio 3. El Algoritmo de Cascada de Mallat (DWT)} %
+\noindent El Análisis Multirresolución (MRA) nos permite calcular la Transformada Ondicular Discreta (DWT) en tiempo $\mathcal{O}(N)$ si nos apoyamos en un banco de filtros ortogonales. %
+
+\vspace{0.5cm}
+\noindent \textbf{1. Pseudocódigo de un nivel de descomposición DWT} %
+% El algoritmo recibe S, g y h, y nos devuelve A y D tras aplicar convolución y diezmado
+
+\begin{algorithm}[H]
+\caption{Descomposición DWT - 1 Nivel}\label{alg:dwt1}
+\begin{algorithmic}[1]
+\Require Señal $S$ de longitud $N$, Filtro pasa-bajas $g$, Filtro pasa-altas $h$ de longitud $K$
+\Ensure Coeficientes de Aproximación $A$, Coeficientes de Detalle $D$
+\State $N \gets \text{longitud}(S)$
+\State $K \gets \text{longitud}(g)$ \Comment{Asumimos que $g$ y $h$ miden lo mismo}
+\State $M \gets \lfloor N / 2 \rfloor$ \Comment{La señal se reduce a la mitad después de diezmarla}
+\State \textbf{Inicializar} arreglos $A$ y $D$ de tamaño $M$ llenos de ceros
+\State \textbf{Convolución y Diezmado (Downsampling $\downarrow 2$):}
+\For{$n \gets 0$ \textbf{to} $M - 1$}
+    \For{$k \gets 0$ \textbf{to} $K - 1$}
+        \If{$(2n - k) \ge 0$ \textbf{and} $(2n - k) < N$} \Comment{Para manejar los bordes / Zero-padding}
+            \State $A[n] \gets A[n] + S[2n - k] \cdot g[k]$
+            \State $D[n] \gets D[n] + S[2n - k] \cdot h[k]$
+        \EndIf
+    \EndFor
+\EndFor
+\State \Return $A, D$
+\end{algorithmic}
+\end{algorithm}
+
+\vspace{0.5cm}
+\noindent \textbf{2. Pseudocódigo para descomposición recursiva hasta el nivel $L$} %
+
+\begin{algorithm}[H]
+\caption{Descomposición DWT Recursiva (Nivel $L$)}\label{alg:dwtL}
+\begin{algorithmic}[1]
+\Require Señal original $S$, Nivel máximo $L$, Filtros $g$ y $h$
+\Ensure Estructura con coeficientes $A_L$ y $D_1, D_2, \dots, D_L$
+\State $A_{curr} \gets S$ \Comment{Al arrancar, nuestra aproximación es la señal tal cual}
+\State $Detalles \gets \text{Lista vacía}$
+\For{$nivel \gets 1$ \textbf{to} $L$}
+    \State $A_{next}, D_{nivel} \gets \text{DWT\_1\_Nivel}(A_{curr}, g, h)$
+    \State $Detalles.\text{agregar}(D_{nivel})$
+    \State $A_{curr} \gets A_{next}$ \Comment{Pasamos los coef. de aproximación al siguiente nivel}
+\EndFor
+\State $A_L \gets A_{curr}$
+\State \Return $A_L, Detalles$
+\end{algorithmic}
+\end{algorithm}
+
+\vspace{1cm}

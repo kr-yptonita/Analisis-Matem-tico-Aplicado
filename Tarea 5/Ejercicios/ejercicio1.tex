@@ -1,0 +1,47 @@
+\subsection*{Ejercicio 1. Condición de Admisibilidad y Media Cero} %
+\noindent Sea $\psi(t)\in L^{2}(\mathbb{R})$ una función wavelet madre. % 
+La condición de admisibilidad que garantiza la existencia de la Transformada Ondicular Inversa está dada por: %
+\begin{equation}
+    C_{\psi}=\int_{-\infty}^{\infty}\frac{|\Psi(\omega)|^{2}}{|\omega|}d\omega<\infty %
+\end{equation}
+donde $\Psi(\omega)$ es la Transformada de Fourier de $\psi(t).$ % 
+Demuestre analíticamente que, para que esta integral converja (y por tanto $C_{\psi}<\infty)$, es estrictamente necesario que la wavelet tenga media cero, es decir, $\int_{-\infty}^{\infty}\psi(t)dt=0.$ %
+
+\vspace{0.5cm}
+\noindent \textbf{Demostración:} \\
+% Escribe tu demostración matemática aquí
+
+Partamos de mantener finita a la constante $C_{\psi}$:
+\begin{equation*}
+    C_{\psi}=\int_{-\infty}^{\infty}\frac{|\Psi(\omega)|^{2}}{|\omega|}d\omega<\infty
+\end{equation*}
+
+La integral anterior tiene una posible singularidad justo en $\omega = 0$
+
+Sabemos que $\psi(t) \in L^2(\mathbb{R})$, si además asumimos que decae lo bastante rápido como para pertenecer a $L^1(\mathbb{R})$, entonces su Transformada de Fourier $\Psi(\omega)$ va a ser una función continua si suponemos por un instante que $\Psi(0) \neq 0$, entonces podríamos tomar una vecindad muy pequeña $[-\epsilon, \epsilon]$ con centro en el origen y donde se cumpla que $|\Psi(\omega)|^2 \approx |\Psi(0)|^2 > 0$ asi si revisamos el comportamiento de la integral en es6to tenemos que
+\begin{equation*}
+    \int_{-\epsilon}^{\epsilon}\frac{|\Psi(\omega)|^{2}}{|\omega|}d\omega \approx |\Psi(0)|^{2} \int_{-\epsilon}^{\epsilon}\frac{1}{|\omega|}d\omega
+\end{equation*}
+
+Ahora la integral $\int_{-\epsilon}^{\epsilon}\frac{1}{|\omega|}d\omega$ tenemos que diverge de forma logarítmica. Así que, de suponer que $\Psi(0) \neq 0$, $C_{\psi}$ se nos iría a infinito y arruinaría por completo la condición de admisibilidad.
+
+Así que para evitar esto necesitamos que el numerador anule esa singularidad osea
+\begin{equation*}
+    \Psi(0) = 0
+\end{equation*}
+
+Si tenemos en cuenta la definición clásica de la Transformada de Fourier para $\psi(t)$:
+\begin{equation*}
+    \Psi(\omega) = \int_{-\infty}^{\infty} \psi(t) e^{-i\omega t} dt
+\end{equation*}
+
+Y evaluamos directo en ($\omega = 0$), lo que nos queda es simplemente la integral de la señal en el dominio del tiempo 
+\begin{equation*}
+    \Psi(0) = \int_{-\infty}^{\infty} \psi(t) e^{-i(0) t} dt = \int_{-\infty}^{\infty} \psi(t) dt
+\end{equation*}
+
+Como ya vimos que $\Psi(0)$ tiene que ser cero entonces
+\begin{equation*}
+    \int_{-\infty}^{\infty} \psi(t) dt = 0
+\end{equation*}
+Con esto queda evidenciado que la función wavelet debe tener media cero. \hfill $\blacksquare$\vspace{1cm}
